@@ -3,6 +3,8 @@ package org.example.musicbooru.track;
 import jakarta.persistence.*;
 import org.example.musicbooru.util.PublicIdGenerator;
 
+import static org.example.musicbooru.util.Common.PUBLIC_ID_LENGTH;
+
 @Entity
 public class Track {
     @Id
@@ -22,11 +24,8 @@ public class Track {
     @Column(nullable = false, unique = true)
     private String filename;
 
-    @Column(nullable = false)
-    private String mimeType;
-
     @PrePersist
     private void generatePublicId() {
-        this.publicId = PublicIdGenerator.generate();
+        this.publicId = PublicIdGenerator.generate(PUBLIC_ID_LENGTH);
     }
 }
