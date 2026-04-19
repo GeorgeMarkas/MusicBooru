@@ -1,24 +1,22 @@
 package org.example.musicbooru.exception;
 
 import jakarta.servlet.http.HttpServletRequest;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.ControllerAdvice;
 import org.springframework.web.bind.annotation.ExceptionHandler;
 
 @ControllerAdvice
+@Slf4j
 public class GlobalExceptionHandler {
-
-    private static final Logger logger = LoggerFactory.getLogger(GlobalExceptionHandler.class);
 
     @ExceptionHandler(GenericException.class)
     public ResponseEntity<ErrorResponse> handleGenericException(
             GenericException e,
             HttpServletRequest request) {
 
-        logger.error("Exception occurred: {}, Request details: {}", e.getMessage(), request.getRequestURI(), e);
+        log.error("Exception occurred: {}, Request details: {}", e.getMessage(), request.getRequestURI(), e);
 
         ErrorResponse error = new ErrorResponse(
                 e.getStatus(),
@@ -34,7 +32,7 @@ public class GlobalExceptionHandler {
             ResourceNotFoundException e,
             HttpServletRequest request) {
 
-        logger.error("Resource not found: {}, Request details: {}", e.getMessage(), request.getRequestURI(), e);
+        log.error("Resource not found: {}, Request details: {}", e.getMessage(), request.getRequestURI(), e);
 
         ErrorResponse error = new ErrorResponse(
                 HttpStatus.NOT_FOUND,
@@ -50,7 +48,7 @@ public class GlobalExceptionHandler {
             IllegalArgumentException e,
             HttpServletRequest request) {
 
-        logger.error("Illegal argument: {}, Request details: {}", e.getMessage(), request.getRequestURI(), e);
+        log.error("Illegal argument: {}, Request details: {}", e.getMessage(), request.getRequestURI(), e);
 
         ErrorResponse error = new ErrorResponse(
                 HttpStatus.BAD_REQUEST,

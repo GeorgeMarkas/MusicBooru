@@ -1,8 +1,10 @@
 package org.example.musicbooru.exception;
 
+import lombok.Getter;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.HttpStatusCode;
 
+@Getter
 public class GenericException extends RuntimeException {
 
     private final HttpStatusCode status;
@@ -14,9 +16,5 @@ public class GenericException extends RuntimeException {
     public GenericException(String message, HttpStatusCode status) {
         super(message);
         this.status = status;
-    }
-
-    public HttpStatusCode getStatus() {
-        return status;
     }
 }

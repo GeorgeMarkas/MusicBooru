@@ -8,9 +8,7 @@ CREATE TABLE track
     year      VARCHAR(10), -- The longest supported format is 'yyyy-MM-dd' e.g. 2010-11-22
     genre     VARCHAR(255),
     duration  INT,
-    filename  VARCHAR(255) NOT NULL,
 
     CONSTRAINT pk_track PRIMARY KEY (id),
-    CONSTRAINT uq_track_public_id UNIQUE (public_id),
-    CONSTRAINT uq_track_filename UNIQUE (filename)
+    CONSTRAINT uq_track_public_id UNIQUE (public_id)
 );

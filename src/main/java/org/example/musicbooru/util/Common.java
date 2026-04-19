@@ -4,7 +4,10 @@ public final class Common {
 
     public static final int PUBLIC_ID_LENGTH = 7;
 
-    public static final String MIME_TYPE = "audio/ogg";
+    public static final String AUDIO_MIME_TYPE = "audio/ogg";
+    public static final String AUDIO_EXTENSION = ".ogg";
+
+    public static final String ARTWORK_EXTENSION = ".jpg";
 
     private Common() {
     }

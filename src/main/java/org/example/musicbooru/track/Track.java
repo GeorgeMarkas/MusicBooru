@@ -1,11 +1,14 @@
 package org.example.musicbooru.track;
 
 import jakarta.persistence.*;
-import org.example.musicbooru.util.PublicIdGenerator;
-
-import static org.example.musicbooru.util.Common.PUBLIC_ID_LENGTH;
+import lombok.AllArgsConstructor;
+import lombok.Builder;
+import lombok.NoArgsConstructor;
 
 @Entity
+@Builder
+@NoArgsConstructor
+@AllArgsConstructor
 public class Track {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -20,12 +23,4 @@ public class Track {
     private String year;
     private String genre;
     private int duration; // In seconds
-
-    @Column(nullable = false, unique = true)
-    private String filename;
-
-    @PrePersist
-    private void generatePublicId() {
-        this.publicId = PublicIdGenerator.generate(PUBLIC_ID_LENGTH);
-    }
 }
