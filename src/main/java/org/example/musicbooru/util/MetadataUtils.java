@@ -1,6 +1,5 @@
 package org.example.musicbooru.util;
 
-import lombok.extern.slf4j.Slf4j;
 import org.jaudiotagger.audio.AudioFile;
 import org.jaudiotagger.audio.AudioFileIO;
 import org.jaudiotagger.audio.exceptions.CannotWriteException;
@@ -20,7 +19,6 @@ import java.util.Optional;
 
 import static org.example.musicbooru.util.Common.ARTWORK_EXTENSION;
 
-@Slf4j
 public class MetadataUtils {
 
     private final AudioFile audioFile;
@@ -38,7 +36,7 @@ public class MetadataUtils {
     /**
      * Extracts the embedded cover art from the given file.
      *
-     * @return The path to a newly created temporary file to which the cover art was copied,
+     * @return the path to a newly created temporary file to which the cover art was copied,
      * wrapped in an {@code Optional}.
      * @throws RuntimeException if extracting the embedded cover art fails.
      */
@@ -63,26 +61,34 @@ public class MetadataUtils {
         }
     }
 
-    /**
-     * Returns the specified metadata field from the given file.
-     *
-     * @param field The corresponding {@link FieldKey} constant of the field to get.
-     * @return The field contents as a string or an empty string if the field does not exist.
-     */
-    public String getField(FieldKey field) {
+    private String getField(FieldKey field) {
         try {
             return this.tag.getFirst(field);
         } catch (KeyNotFoundException e) {
-            log.warn("{} field does not exist", field.name(), e);
             return "";
         }
     }
 
-    /**
-     * Returns the audio file's duration.
-     *
-     * @return The duration in seconds.
-     */
+    public String getArtist() {
+        return getField(FieldKey.ARTIST);
+    }
+
+    public String getTitle() {
+        return getField(FieldKey.TITLE);
+    }
+
+    public String getAlbum() {
+        return getField(FieldKey.ALBUM);
+    }
+
+    public String getYear() {
+        return getField(FieldKey.YEAR);
+    }
+
+    public String getGenre() {
+        return getField(FieldKey.GENRE);
+    }
+
     public int getDuration() {
         return audioFile.getAudioHeader().getTrackLength();
     }
