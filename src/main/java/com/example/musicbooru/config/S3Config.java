@@ -1,4 +1,4 @@
-package org.example.musicbooru.config;
+package com.example.musicbooru.config;
 
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.context.annotation.Bean;

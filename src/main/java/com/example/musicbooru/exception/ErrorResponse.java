@@ -1,4 +1,4 @@
-package org.example.musicbooru.exception;
+package com.example.musicbooru.exception;
 
 import com.fasterxml.jackson.annotation.JsonFormat;
 import org.springframework.http.HttpStatus;

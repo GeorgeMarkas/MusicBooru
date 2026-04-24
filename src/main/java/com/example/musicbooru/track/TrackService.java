@@ -1,4 +1,4 @@
-package org.example.musicbooru.track;
+package com.example.musicbooru.track;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;

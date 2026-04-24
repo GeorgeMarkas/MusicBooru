@@ -1,4 +1,4 @@
-package org.example.musicbooru.track;
+package com.example.musicbooru.track;
 
 import jakarta.persistence.*;
 import lombok.AllArgsConstructor;

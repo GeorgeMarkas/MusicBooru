@@ -1,4 +1,4 @@
-package org.example.musicbooru.exception;
+package com.example.musicbooru.exception;
 
 import jakarta.servlet.http.HttpServletRequest;
 import lombok.extern.slf4j.Slf4j;

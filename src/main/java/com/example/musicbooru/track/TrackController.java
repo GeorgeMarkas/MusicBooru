@@ -1,4 +1,4 @@
-package org.example.musicbooru.track;
+package com.example.musicbooru.track;
 
 import lombok.RequiredArgsConstructor;
 import org.springframework.web.bind.annotation.RequestMapping;

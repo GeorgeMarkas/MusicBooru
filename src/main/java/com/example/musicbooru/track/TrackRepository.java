@@ -1,4 +1,4 @@
-package org.example.musicbooru.track;
+package com.example.musicbooru.track;
 
 import org.springframework.data.jpa.repository.JpaRepository;
 

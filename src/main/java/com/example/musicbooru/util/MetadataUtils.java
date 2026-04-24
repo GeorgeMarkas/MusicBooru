@@ -1,4 +1,4 @@
-package org.example.musicbooru.util;
+package com.example.musicbooru.util;
 
 import org.jaudiotagger.audio.AudioFile;
 import org.jaudiotagger.audio.AudioFileIO;
@@ -17,7 +17,7 @@ import java.nio.file.Files;
 import java.nio.file.Path;
 import java.util.Optional;
 
-import static org.example.musicbooru.util.Constants.ARTWORK_EXTENSION;
+import static com.example.musicbooru.util.Constants.ARTWORK_EXTENSION;
 
 public class MetadataUtils {
 

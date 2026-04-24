@@ -1,4 +1,4 @@
-package org.example.musicbooru.util;
+package com.example.musicbooru.util;
 
 import org.apache.tika.Tika;
 import org.apache.tika.exception.TikaException;
