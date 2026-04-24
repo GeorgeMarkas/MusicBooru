@@ -4,58 +4,39 @@ import jakarta.servlet.http.HttpServletRequest;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
-import org.springframework.web.bind.annotation.ControllerAdvice;
 import org.springframework.web.bind.annotation.ExceptionHandler;
+import org.springframework.web.bind.annotation.RestControllerAdvice;
 
-@ControllerAdvice
+@RestControllerAdvice
 @Slf4j
 public class GlobalExceptionHandler {
-
     @ExceptionHandler(GenericException.class)
-    public ResponseEntity<ErrorResponse> handleGenericException(
-            GenericException e,
-            HttpServletRequest request) {
+    public ResponseEntity<ErrorResponse> handleGenericException(GenericException ex, HttpServletRequest request) {
+        log.warn("Generic exception: {}", ex.getMessage(), ex);
 
-        log.error("Exception occurred: {}, Request details: {}", e.getMessage(), request.getRequestURI(), e);
-
-        ErrorResponse error = new ErrorResponse(
-                e.getStatus(),
-                e.getMessage(),
+        ErrorResponse response = new ErrorResponse(
+                ex.getStatus(),
+                ex.getMessage(),
                 request.getRequestURI()
         );
 
-        return new ResponseEntity<>(error, e.getStatus());
+        return ResponseEntity
+                .status(ex.getStatus())
+                .body(response);
     }
 
-    @ExceptionHandler(ResourceNotFoundException.class)
-    public ResponseEntity<ErrorResponse> handleResourceNotFoundException(
-            ResourceNotFoundException e,
-            HttpServletRequest request) {
+    @ExceptionHandler(Exception.class)
+    public ResponseEntity<ErrorResponse> handleAllExceptions(Exception ex, HttpServletRequest request) {
+        log.error("Unhandled exception: {}", ex.getMessage(), ex);
 
-        log.error("Resource not found: {}, Request details: {}", e.getMessage(), request.getRequestURI(), e);
-
-        ErrorResponse error = new ErrorResponse(
-                HttpStatus.NOT_FOUND,
-                e.getMessage(),
+        ErrorResponse response = new ErrorResponse(
+                HttpStatus.INTERNAL_SERVER_ERROR,
+                "Something went wrong",
                 request.getRequestURI()
         );
 
-        return new ResponseEntity<>(error, HttpStatus.NOT_FOUND);
-    }
-
-    @ExceptionHandler(IllegalArgumentException.class)
-    public ResponseEntity<ErrorResponse> handleIllegalArgumentException(
-            IllegalArgumentException e,
-            HttpServletRequest request) {
-
-        log.error("Illegal argument: {}, Request details: {}", e.getMessage(), request.getRequestURI(), e);
-
-        ErrorResponse error = new ErrorResponse(
-                HttpStatus.BAD_REQUEST,
-                e.getMessage(),
-                request.getRequestURI()
-        );
-
-        return new ResponseEntity<>(error, HttpStatus.BAD_REQUEST);
+        return ResponseEntity
+                .status(HttpStatus.INTERNAL_SERVER_ERROR)
+                .body(response);
     }
 }
