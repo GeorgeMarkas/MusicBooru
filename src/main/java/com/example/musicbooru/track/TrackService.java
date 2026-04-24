@@ -1,29 +1,93 @@
 package com.example.musicbooru.track;
 
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
+import com.example.musicbooru.exception.GenericException;
+import com.example.musicbooru.outbox.OutboxEvent;
+import com.example.musicbooru.outbox.OutboxEventRepository;
+import com.example.musicbooru.outbox.OutboxStatus;
+import com.example.musicbooru.util.ContentUtils;
+import com.example.musicbooru.util.MetadataUtils;
+import com.example.musicbooru.util.PublicIdGenerator;
+import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
-import software.amazon.awssdk.services.s3.S3Client;
+import org.springframework.transaction.annotation.Transactional;
+import org.springframework.web.multipart.MultipartFile;
+
+import java.io.IOException;
+import java.nio.file.Files;
+import java.nio.file.Path;
+import java.time.Instant;
+import java.util.Optional;
+
+import static com.example.musicbooru.util.Constants.*;
 
 @Service
+@RequiredArgsConstructor
 public class TrackService {
 
-    private static final Logger logger = LoggerFactory.getLogger(TrackService.class);
-
-    private final S3Client s3Client;
-
     private final TrackRepository trackRepository;
+    private final OutboxEventRepository outboxEventRepository;
 
-    public TrackService(S3Client s3Client, TrackRepository trackRepository) {
-        this.s3Client = s3Client;
-        this.trackRepository = trackRepository;
-    }
+    @Transactional
+    public Track addTrack(MultipartFile file) {
+        // Copy the user uploaded content to a temporary file for processing
+        Path userUpload;
+        try {
+            userUpload = Files.createTempFile(null, ContentUtils.detectFileExtension(file));
+            file.transferTo(userUpload);
+        } catch (IOException e) {
+            throw new GenericException("Failed to copy user upload to temporary file", e);
+        }
 
-    public Track addTrack() {
-        throw new UnsupportedOperationException("Method has not been yet implemented");
-    }
+        // Create a unique public ID for API use
+        String publicId;
+        try {
+            publicId = PublicIdGenerator.generate(PUBLIC_ID_LENGTH, 3, trackRepository::existsByPublicId);
+        } catch (RuntimeException e) {
+            throw new GenericException(e.getMessage(), e);
+        }
 
-    public void removeTrack() {
-        throw new UnsupportedOperationException("Method has not been yet implemented");
+        // Create track entity instance
+        MetadataUtils metadataUtils = new MetadataUtils(userUpload.toFile());
+
+        Track track = Track.builder()
+                .publicId(publicId)
+                .artist(metadataUtils.getArtist())
+                .title(metadataUtils.getTitle())
+                .album(metadataUtils.getAlbum())
+                .year(metadataUtils.getYear())
+                .genre(metadataUtils.getGenre())
+                .duration(metadataUtils.getDuration())
+                .status(TrackStatus.PENDING)
+                .build();
+
+        trackRepository.save(track);
+
+        // If embedded artwork is present, extract it
+        String artworkPath;
+        try {
+            Optional<Path> artwork = metadataUtils.extractArtwork();
+            artworkPath = artwork.map(Path::toString).orElse(null);
+        } catch (RuntimeException e) {
+            throw new GenericException(e.getMessage(), e);
+        }
+
+        // TODO: Attempt transcoding, probably here or offloaded to another worker
+        // Pretend to transcode
+        String audioPath = userUpload.toString();
+
+        // Create outbox event
+        OutboxEvent event = OutboxEvent.builder()
+                .trackId(track.getId())
+                .trackPublicId(publicId)
+                .audioPath(audioPath)
+                .artworkPath(artworkPath)
+                .status(OutboxStatus.PENDING)
+                .attempts(0)
+                .createdAt(Instant.now())
+                .build();
+
+        outboxEventRepository.save(event);
+
+        return track;
     }
 }

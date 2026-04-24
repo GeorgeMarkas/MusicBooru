@@ -11,29 +11,29 @@ import org.springframework.web.bind.annotation.RestControllerAdvice;
 @Slf4j
 public class GlobalExceptionHandler {
     @ExceptionHandler(GenericException.class)
-    public ResponseEntity<ErrorResponse> handleGenericException(GenericException ex, HttpServletRequest request) {
-        log.warn("Generic exception: {}", ex.getMessage(), ex);
+    public ResponseEntity<ErrorResponse> handleGenericException(GenericException e, HttpServletRequest request) {
+        log.warn("Generic exception: {}", e.getMessage(), e);
 
         ErrorResponse response = new ErrorResponse(
-                ex.getStatus(),
-                ex.getMessage(),
+                e.getStatus(),
+                e.getMessage(),
                 request.getRequestURI()
         );
 
         return ResponseEntity
-                .status(ex.getStatus())
+                .status(e.getStatus())
                 .body(response);
     }
 
     @ExceptionHandler(ResourceNotFoundException.class)
-    public ResponseEntity<ErrorResponse> handleResourceNotFoundException(ResourceNotFoundException ex,
+    public ResponseEntity<ErrorResponse> handleResourceNotFoundException(ResourceNotFoundException e,
                                                                          HttpServletRequest request) {
 
-        log.warn("Resource not found: {} with ID '{}'", ex.getResourceType(), ex.getResourceId(), ex);
+        log.warn("Resource not found: {} with ID '{}'", e.getResourceType(), e.getResourceId(), e);
 
         ErrorResponse response = new ErrorResponse(
                 HttpStatus.NOT_FOUND,
-                ex.getMessage(),
+                e.getMessage(),
                 request.getRequestURI()
         );
 
@@ -43,8 +43,8 @@ public class GlobalExceptionHandler {
     }
 
     @ExceptionHandler(Exception.class)
-    public ResponseEntity<ErrorResponse> handleAllExceptions(Exception ex, HttpServletRequest request) {
-        log.error("Unhandled exception: {}", ex.getMessage(), ex);
+    public ResponseEntity<ErrorResponse> handleAllExceptions(Exception e, HttpServletRequest request) {
+        log.error("Unhandled exception: {}", e.getMessage(), e);
 
         ErrorResponse response = new ErrorResponse(
                 HttpStatus.INTERNAL_SERVER_ERROR,

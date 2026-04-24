@@ -20,4 +20,8 @@ public class GenericException extends RuntimeException {
     public GenericException(String message) {
         this(message, HttpStatus.INTERNAL_SERVER_ERROR);
     }
+
+    public GenericException(String message, Throwable cause) {
+        this(message, HttpStatus.INTERNAL_SERVER_ERROR, cause);
+    }
 }

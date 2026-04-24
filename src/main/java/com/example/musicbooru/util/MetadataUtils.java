@@ -28,8 +28,8 @@ public class MetadataUtils {
         try {
             this.audioFile = AudioFileIO.read(file);
             this.tag = this.audioFile.getTag();
-        } catch (Exception ex) {
-            throw new RuntimeException("Could not read the tag contained in the given file", ex);
+        } catch (Exception e) {
+            throw new RuntimeException("Could not read the tag contained in the given file", e);
         }
     }
 
@@ -56,15 +56,15 @@ public class MetadataUtils {
             this.audioFile.commit();
 
             return Optional.of(temp);
-        } catch (IOException | CannotWriteException ex) {
-            throw new RuntimeException("Failed to extract artwork", ex);
+        } catch (IOException | CannotWriteException e) {
+            throw new RuntimeException("Failed to extract artwork", e);
         }
     }
 
     private String getField(FieldKey field) {
         try {
             return this.tag.getFirst(field);
-        } catch (KeyNotFoundException ex) {
+        } catch (KeyNotFoundException e) {
             return "";
         }
     }
