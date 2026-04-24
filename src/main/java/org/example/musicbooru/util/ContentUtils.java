@@ -19,7 +19,7 @@ public class ContentUtils {
     );
 
     /**
-     * Detects the extension of the given file.
+     * Detects the proper extension for the given file.
      *
      * @param file The file to parse.
      * @return The detected file extension.
@@ -36,10 +36,8 @@ public class ContentUtils {
                             .forName(mimeType)
                             .getExtension()
             );
-        } catch (IOException e) {
-            throw new RuntimeException("Could not read file", e);
-        } catch (TikaException e) {
-            throw new RuntimeException("Invalid media type name", e);
+        } catch (IOException | TikaException ex) {
+            throw new RuntimeException("Could not detect file extension", ex);
         }
     }
 }

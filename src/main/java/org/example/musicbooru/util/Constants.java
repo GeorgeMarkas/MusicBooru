@@ -1,6 +1,6 @@
 package org.example.musicbooru.util;
 
-public final class Common {
+public final class Constants {
 
     public static final int PUBLIC_ID_LENGTH = 7;
 
@@ -9,6 +9,6 @@ public final class Common {
 
     public static final String ARTWORK_EXTENSION = ".jpg";
 
-    private Common() {
+    private Constants() {
     }
 }
