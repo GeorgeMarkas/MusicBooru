@@ -1,20 +1,20 @@
 package org.example.musicbooru.exception;
 
 import com.fasterxml.jackson.annotation.JsonFormat;
-import org.springframework.http.HttpStatusCode;
+import org.springframework.http.HttpStatus;
 
-import java.time.LocalDateTime;
+import java.time.Instant;
 
 public record ErrorResponse(
-        HttpStatusCode status,
+        HttpStatus status,
         String message,
 
-        @JsonFormat(shape = JsonFormat.Shape.STRING, pattern = "yyyy-MM-dd HH:mm:ss")
-        LocalDateTime timestamp,
+        @JsonFormat(pattern = "dd-MM-yyyy HH:mm:ss")
+        Instant timestamp,
 
-        String uri
+        String path
 ) {
-    public ErrorResponse(HttpStatusCode statusCode, String message, String uri) {
-        this(statusCode, message, LocalDateTime.now(), uri);
+    public ErrorResponse(HttpStatus status, String message, String path) {
+        this(status, message, Instant.now(), path);
     }
 }
