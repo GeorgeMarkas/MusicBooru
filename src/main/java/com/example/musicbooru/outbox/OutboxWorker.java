@@ -35,7 +35,7 @@ public class OutboxWorker {
     @Value("${garage.bucket-library}")
     private String libraryBucket;
 
-    @Scheduled(fixedDelay = 10_000) // 10 seconds
+    @Scheduled(fixedDelay = 10_000)
     @Transactional
     public void processPending() {
         List<OutboxEvent> events = outboxEventRepository
@@ -46,6 +46,7 @@ public class OutboxWorker {
                 uploadToS3(event);
                 markTrackReady(event.getTrackId());
                 event.setStatus(OutboxStatus.DONE);
+                log.info("Track '{}' added", event.getTrackPublicId());
             } catch (RuntimeException e) {
                 log.error("Outbox processing failed for event '{}'", event.getId(), e);
                 event.updateAttempts();

@@ -6,4 +6,6 @@ import java.util.List;
 
 public interface OutboxEventRepository extends JpaRepository<OutboxEvent, Long> {
     List<OutboxEvent> findByStatusAndAttemptsLessThan(OutboxStatus status, int attemptsIsLessThan);
+
+    void deleteByStatus(OutboxStatus status);
 }
