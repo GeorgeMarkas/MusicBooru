@@ -20,4 +20,10 @@ public class TrackController {
                 .status(HttpStatus.CREATED)
                 .body(track);
     }
+
+    @DeleteMapping("/{trackPublicId}")
+    public ResponseEntity<?> deleteTrack(@PathVariable String trackPublicId) {
+        trackService.removeTrack(trackPublicId);
+        return ResponseEntity.noContent().build();
+    }
 }

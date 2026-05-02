@@ -8,4 +8,6 @@ public interface OutboxEventRepository extends JpaRepository<OutboxEvent, Long> 
     List<OutboxEvent> findByStatusAndAttemptsLessThan(OutboxStatus status, int attemptsIsLessThan);
 
     void deleteByStatus(OutboxStatus status);
+
+    void deleteByTrackId(Long trackId);
 }
