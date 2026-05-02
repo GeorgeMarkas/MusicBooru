@@ -1,4 +1,4 @@
-package org.example.musicbooru.config;
+package com.example.musicbooru.config;
 
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.context.annotation.Bean;
@@ -39,7 +39,7 @@ public class S3Config {
                                 .pathStyleAccessEnabled(true)
                                 .build()
                 )
-                .region(Region.of("us-east-1")) // Not applicable to our local storage, placeholder value
+                .region(Region.of("musicbooru")) // Not applicable to our local storage, placeholder value
                 .build();
     }
 }

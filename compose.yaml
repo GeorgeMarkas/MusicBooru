@@ -14,8 +14,8 @@ services:
     image: dxflrs/garage:v2.2.0
     volumes:
       - ./garage.toml:/etc/garage.toml
-      - ./garage/garage-meta:/var/lib/garage/meta
-      - ./garage/garage-data:/var/lib/garage/data
+      - garage-meta:/var/lib/garage/meta
+      - garage-data:/var/lib/garage/data
     ports:
       - "3900:3900"
       - "3901:3901"
@@ -35,3 +35,7 @@ services:
       - SPRING_JPA_HIBERNATE_DDL_AUTO=validate
     ports:
       - "8080:8080"
+
+volumes:
+  garage-meta:
+  garage-data:

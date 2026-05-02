@@ -1,4 +1,4 @@
-package org.example.musicbooru.util;
+package com.example.musicbooru.util;
 
 public final class Constants {
 

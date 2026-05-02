@@ -1,12 +1,12 @@
-package org.example.musicbooru.track;
+package com.example.musicbooru.track;
 
 import jakarta.persistence.*;
-import lombok.AllArgsConstructor;
-import lombok.Builder;
-import lombok.NoArgsConstructor;
+import lombok.*;
 
 @Entity
 @Builder
+@Getter
+@Setter
 @NoArgsConstructor
 @AllArgsConstructor
 public class Track {
@@ -23,4 +23,7 @@ public class Track {
     private String year;
     private String genre;
     private int duration; // In seconds
+
+    @Enumerated(EnumType.STRING)
+    private TrackStatus status;
 }

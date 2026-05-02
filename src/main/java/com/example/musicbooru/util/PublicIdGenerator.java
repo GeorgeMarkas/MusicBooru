@@ -1,4 +1,4 @@
-package org.example.musicbooru.util;
+package com.example.musicbooru.util;
 
 import java.security.SecureRandom;
 import java.util.function.Predicate;

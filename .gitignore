@@ -5,10 +5,9 @@ target/
 !**/src/test/**/target/
 *.log*
 .env
-requests.http
 garage.toml
-garage/
-test-library/
+requests.http
+http-client.env.json
 
 ### STS ###
 .apt_generated

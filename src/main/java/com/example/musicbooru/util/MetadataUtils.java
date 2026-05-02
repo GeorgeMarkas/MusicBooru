@@ -1,4 +1,4 @@
-package org.example.musicbooru.util;
+package com.example.musicbooru.util;
 
 import org.jaudiotagger.audio.AudioFile;
 import org.jaudiotagger.audio.AudioFileIO;
@@ -17,7 +17,7 @@ import java.nio.file.Files;
 import java.nio.file.Path;
 import java.util.Optional;
 
-import static org.example.musicbooru.util.Constants.ARTWORK_EXTENSION;
+import static com.example.musicbooru.util.Constants.ARTWORK_EXTENSION;
 
 public class MetadataUtils {
 
@@ -28,8 +28,8 @@ public class MetadataUtils {
         try {
             this.audioFile = AudioFileIO.read(file);
             this.tag = this.audioFile.getTag();
-        } catch (Exception ex) {
-            throw new RuntimeException("Could not read the tag contained in the given file", ex);
+        } catch (Exception e) {
+            throw new RuntimeException("Could not read the tag contained in the given file", e);
         }
     }
 
@@ -56,15 +56,15 @@ public class MetadataUtils {
             this.audioFile.commit();
 
             return Optional.of(temp);
-        } catch (IOException | CannotWriteException ex) {
-            throw new RuntimeException("Failed to extract artwork", ex);
+        } catch (IOException | CannotWriteException e) {
+            throw new RuntimeException("Failed to extract artwork", e);
         }
     }
 
     private String getField(FieldKey field) {
         try {
             return this.tag.getFirst(field);
-        } catch (KeyNotFoundException ex) {
+        } catch (KeyNotFoundException e) {
             return "";
         }
     }
