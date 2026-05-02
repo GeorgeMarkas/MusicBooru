@@ -6,10 +6,12 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.ExceptionHandler;
 import org.springframework.web.bind.annotation.RestControllerAdvice;
+import org.springframework.web.multipart.MaxUploadSizeExceededException;
 
 @RestControllerAdvice
 @Slf4j
 public class GlobalExceptionHandler {
+
     @ExceptionHandler(GenericException.class)
     public ResponseEntity<ErrorResponse> handleGenericException(GenericException e, HttpServletRequest request) {
         log.warn("Generic exception: {}", e.getMessage(), e);
@@ -39,6 +41,23 @@ public class GlobalExceptionHandler {
 
         return ResponseEntity
                 .status(HttpStatus.NOT_FOUND)
+                .body(response);
+    }
+
+    @ExceptionHandler(MaxUploadSizeExceededException.class)
+    public ResponseEntity<ErrorResponse> handleMaxUploadSizeExceededException(MaxUploadSizeExceededException e,
+                                                                              HttpServletRequest request) {
+
+        log.warn("Max upload size exceeded: {}", e.getMessage(), e);
+
+        ErrorResponse response = new ErrorResponse(
+                HttpStatus.CONTENT_TOO_LARGE,
+                "Max upload size exceeded",
+                request.getRequestURI()
+        );
+
+        return ResponseEntity
+                .status(HttpStatus.CONTENT_TOO_LARGE)
                 .body(response);
     }
 

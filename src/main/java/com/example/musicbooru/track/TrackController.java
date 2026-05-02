@@ -6,6 +6,8 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
 
+import java.util.List;
+
 @RestController
 @RequiredArgsConstructor
 @RequestMapping("/track")
@@ -14,16 +16,16 @@ public class TrackController {
     private final TrackService trackService;
 
     @PostMapping
-    public ResponseEntity<Track> uploadTrack(@RequestPart("file") MultipartFile file) {
-        Track track = trackService.addTrack(file);
+    public ResponseEntity<List<Track>> uploadTracks(@RequestParam("file") List<MultipartFile> files) {
+        List<Track> tracks = trackService.addTracks(files);
         return ResponseEntity
                 .status(HttpStatus.CREATED)
-                .body(track);
+                .body(tracks);
     }
 
-    @DeleteMapping("/{trackPublicId}")
-    public ResponseEntity<?> deleteTrack(@PathVariable String trackPublicId) {
-        trackService.removeTrack(trackPublicId);
+    @DeleteMapping
+    public ResponseEntity<?> deleteTracks(@RequestBody DeleteTracksRequest request) {
+        trackService.removeTracks(request.publicTrackIds());
         return ResponseEntity.noContent().build();
     }
 }
